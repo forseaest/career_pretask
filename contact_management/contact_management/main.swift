@@ -9,11 +9,15 @@ import Foundation
 
 var addressList: [(String, String, String)] = []
 
+// MARK: - 0) 메뉴
+
+/// 메뉴를 표기하는 함수
 func showMenu() {
     print("1) 연락처 추가 2) 연락처 목록보기 3) 연락처 검색 x) 종료")
     print("메뉴를 선택해주세요 : ", terminator: "")
 }
 
+/// 메뉴 선택에 대한 사용자 입력을 받는 함수
 func selectMenu() {
     var userInput = readLine()
     
@@ -38,6 +42,7 @@ func selectMenu() {
 
 // MARK: - 1) 연락처 추가
 
+/// 연락처 추가에서 사용자 입력을 검증하는 함수
 func addAddress() {
     var userInfo: String = ""
     
@@ -83,6 +88,7 @@ func checkInfo(info: [String]) {
     print("입력한 정보는 \(age)세 \(name)(\(address))입니다.")
 }
 
+/// 사용자가 입력한 나이정보를 검증하는 함수
 func checkAge(age: String) -> Bool {
     if let safeAge = Int(age) {
         return true
@@ -91,6 +97,7 @@ func checkAge(age: String) -> Bool {
     }
 }
 
+/// 사용자가 입력한 연락처정보를 검증하는 함수
 func checkAddress(address: String) -> Bool {
     let splitAddress = address.split(separator: "-")
     
@@ -103,16 +110,14 @@ func checkAddress(address: String) -> Bool {
 
 // MARK: - 2) 연락처 목록보기
 
+/// 연락처 목록을 출력하는 함수
 func showAddress() {
-    let alphabeticalList = addressList.sorted { lhsAddress, rhsAddress in
-        return lhsAddress.0 < rhsAddress.0
-    }
-    
     for userInfo in addressList {
         print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
     }
 }
 
+/// 연락처 목록을 이름의 알파벳 순으로 정렬하는 함수
 func sortAddressList() {
     addressList = addressList.sorted { lhsAddress, rhsAddress in
         return lhsAddress.0 < rhsAddress.0
@@ -121,6 +126,7 @@ func sortAddressList() {
 
 // MARK: - 3) 연락처 검색
 
+/// 연락처 검색에서 사용자 입력을 검증하는 함수
 func searchAddress() {
     print("연락처에서 찾을 이름을 입력해주세요 : ", terminator: "")
     let inputName = readLine()
@@ -141,6 +147,8 @@ func searchAddress() {
         print("입력이 잘못되었습니다. 확인 후 다시 입력해주세요.")
     }
 }
+
+// MARK: - 실행
 
 while true {
     showMenu()
