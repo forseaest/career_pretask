@@ -7,8 +7,6 @@
 
 import Foundation
 
-// Todo: - 이름이 공란일 때 오류 메시지 출력
-
 var addressList: [(String, String, String)] = []
 
 func showMenu() {
@@ -63,6 +61,11 @@ func checkInfo(info: [String]) {
     let name = info[0].replacingOccurrences(of: " ", with: "") // 입력된 이름 안의 띄어쓰기 제거
     let age = info[1].replacingOccurrences(of: " ", with: "") // 입력된 나 안의 띄어쓰기 제거
     let address = info[2].replacingOccurrences(of: " ", with: "") // 입력된 연락처 안의 띄어쓰기 제거
+    
+    if name == "" {
+        print("입력한 이름정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
+        return
+    }
     
     if checkAge(age: age) == false {
         print("입력한 나이정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
