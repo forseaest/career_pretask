@@ -26,7 +26,7 @@ func selectMenu() {
         case "1":
             verifyAddAddress()
         case "2":
-            showAddress()
+            showEntireAddress()
         case "3":
             searchAddress()
         case "x":
@@ -117,8 +117,8 @@ func checkAddress(address: String) -> Bool {
 
 // MARK: - 2) 연락처 목록보기
 
-/// 연락처 목록을 출력하는 함수
-func showAddress() {
+/// 연락처 전체 목록을 출력하는 함수
+func showEntireAddress() {
     for userInfo in addressList {
         print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
     }
@@ -139,19 +139,24 @@ func searchAddress() {
     let inputName = readLine()
     
     if let safeName = inputName {
-        let inputNameList = addressList.filter { (name, age, address) in
-            return name == safeName
-        }
-        
-        if inputNameList.isEmpty {
-            print("연락처에 \(safeName) 이(가) 없습니다.")
-        } else {
-            for userInfo in inputNameList {
-                print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
-            }
-        }
+        showAddressByName(inputName: safeName)
     } else {
         print("입력이 잘못되었습니다. 확인 후 다시 입력해주세요.")
+    }
+}
+
+/// 특정 이름의 연락처 목록을 출력하는 함수
+func showAddressByName(inputName: String) {
+    let inputNameList = addressList.filter { (name, age, address) in
+        return name == inputName
+    }
+    
+    if inputNameList.isEmpty {
+        print("연락처에 \(inputName) 이(가) 없습니다.")
+    } else {
+        for userInfo in inputNameList {
+            print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
+        }
     }
 }
 
