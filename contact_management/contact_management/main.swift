@@ -24,7 +24,7 @@ func selectMenu() {
     if let selectedMenu = userInput {
         switch selectedMenu {
         case "1":
-            addAddress()
+            verifyAddAddress()
         case "2":
             showAddress()
         case "3":
@@ -43,49 +43,56 @@ func selectMenu() {
 // MARK: - 1) 연락처 추가
 
 /// 연락처 추가에서 사용자 입력을 검증하는 함수
-func addAddress() {
-    var userInfo: String = ""
-    
+func verifyAddAddress() {
     print("연락처 정보를 입력해주세요 : ", terminator: "")
-
-    if let inputInfo = readLine() {
-        let inputInfoArray = inputInfo.split(separator: "/").map { String($0) }
-        let inputInfoCount = inputInfoArray.count
+    
+    if let userInput = readLine() {
+        let splitUserInput = userInput.split(separator: "/").map { String($0) }
+        let splitUserInputCount = splitUserInput.count
         
-        if inputInfoCount == 0 {
+        if splitUserInputCount == 0 {
             print("아무것도 입력되지 않았습니다. 입력 형식을 확인해주세요.")
-        } else if inputInfoCount == 1 || inputInfoCount == 2 {
+        } else if splitUserInputCount == 1 || splitUserInputCount == 2 {
             print("입력 정보가 누락되었습니다. 입력 형식을 확인해주세요.")
         } else {
-            checkInfo(info: inputInfoArray)
+            let name = splitUserInput[0].replacingOccurrences(of: " ", with: "") // 입력된 이름 안의 띄어쓰기 제거
+            let age = splitUserInput[1].replacingOccurrences(of: " ", with: "") // 입력된 나 안의 띄어쓰기 제거
+            let address = splitUserInput[2].replacingOccurrences(of: " ", with: "") // 입력된 연락처 안의 띄어쓰기 제거
+            
+            if checkName(name: name) == false {
+                print("입력한 이름정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
+                return
+            }
+            
+            if checkAge(age: age) == false {
+                print("입력한 나이정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
+                return
+            }
+            
+            if checkAddress(address: address) == false {
+                print("입력한 연락처정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
+                return
+            }
+            
+            addAddress(name: name, age: age, address: address)
+            print("입력한 정보는 \(age)세 \(name)(\(address))입니다.")
         }
     }
 }
 
-func checkInfo(info: [String]) {
-    let name = info[0].replacingOccurrences(of: " ", with: "") // 입력된 이름 안의 띄어쓰기 제거
-    let age = info[1].replacingOccurrences(of: " ", with: "") // 입력된 나 안의 띄어쓰기 제거
-    let address = info[2].replacingOccurrences(of: " ", with: "") // 입력된 연락처 안의 띄어쓰기 제거
-    
-    if name == "" {
-        print("입력한 이름정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
-        return
-    }
-    
-    if checkAge(age: age) == false {
-        print("입력한 나이정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
-        return
-    }
-    
-    if checkAddress(address: address) == false {
-        print("입력한 연락처정보가 잘못되었습니다. 입력 형식을 확인해주세요.")
-        return
-    }
-    
+/// 연락처 목록에 입력된 연락처를 추가하는 함수
+func addAddress(name: String, age: String, address: String) {
     addressList.append(("\(name)", "\(age)", "\(address)"))
     sortAddressList()
-    
-    print("입력한 정보는 \(age)세 \(name)(\(address))입니다.")
+}
+
+/// 사용자가 입력한 이름정보를 검증하는 함수
+func checkName(name: String) -> Bool {
+    if name == "" {
+        return false
+    } else {
+        return true
+    }
 }
 
 /// 사용자가 입력한 나이정보를 검증하는 함수
