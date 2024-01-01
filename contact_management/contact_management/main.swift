@@ -7,8 +7,9 @@
 
 import Foundation
 
-// Todo: - 1, 2, 3, x 외의 입력을 받으면 잘못된 입력을 알리고 다시 메뉴를 출력하는 기능
 // Todo: - 이름이 공란일 때 오류 메시지 출력
+
+var addressList: [(String, String, String)] = []
 
 func showMenu() {
     print("1) 연락처 추가 2) 연락처 목록보기 3) 연락처 검색 x) 종료")
@@ -28,6 +29,7 @@ func selectMenu() {
             searchAddress()
         case "x":
             print("[프로그램 종료]")
+            return
         default:
             print("선택이 잘못되었습니다. 확인 후 다시 입력해주세요.")
         }
@@ -72,6 +74,9 @@ func checkInfo(info: [String]) {
         return
     }
     
+    addressList.append(("\(name)", "\(age)", "\(address)"))
+    sortAddressList()
+    
     print("입력한 정보는 \(age)세 \(name)(\(address))입니다.")
 }
 
@@ -96,14 +101,45 @@ func checkAddress(address: String) -> Bool {
 // MARK: - 2) 연락처 목록보기
 
 func showAddress() {
+    let alphabeticalList = addressList.sorted { lhsAddress, rhsAddress in
+        return lhsAddress.0 < rhsAddress.0
+    }
     
+    for userInfo in addressList {
+        print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
+    }
+}
+
+func sortAddressList() {
+    addressList = addressList.sorted { lhsAddress, rhsAddress in
+        return lhsAddress.0 < rhsAddress.0
+    }
 }
 
 // MARK: - 3) 연락처 검색
 
 func searchAddress() {
+    print("연락처에서 찾을 이름을 입력해주세요 : ", terminator: "")
+    let inputName = readLine()
     
+    if let safeName = inputName {
+        let inputNameList = addressList.filter { (name, age, address) in
+            return name == safeName
+        }
+        
+        if inputNameList.isEmpty {
+            print("연락처에 \(safeName) 이(가) 없습니다.")
+        } else {
+            for userInfo in inputNameList {
+                print("- \(userInfo.0) / \(userInfo.1) / \(userInfo.2)")
+            }
+        }
+    } else {
+        print("입력이 잘못되었습니다. 확인 후 다시 입력해주세요.")
+    }
 }
 
-showMenu()
-selectMenu()
+while true {
+    showMenu()
+    selectMenu()
+}
